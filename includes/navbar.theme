@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Navbar menu alignment setting.
+ *
+ * The navbar colours come from the Bootstrap 5 base theme's own "Navbar
+ * theme" and "Navbar background" settings.
+ */
+
+use Drupal\Core\Render\Markup;
+
+/**
+ * Navbar menu alignment options.
+ *
+ * Each value is [label, CSS justify-content value]. The base theme's page
+ * template puts the menus on the right (justify-content-md-end).
+ *
+ * @return array<string, array{0: string, 1: string}>
+ *   The options, keyed by setting value.
+ */
+function vsm_navbar_alignment_options(): array {
+  return [
+    'left' => ['Left', 'flex-start'],
+    'center' => ['Centre', 'center'],
+    'right' => ['Right (default)', 'flex-end'],
+  ];
+}
+
+/**
+ * Attaches the navbar alignment CSS to the page.
+ *
+ * Called from vsm_page_attachments_alter().
+ */
+function vsm_navbar_page_attachments(array &$attachments): void {
+  $options = vsm_navbar_alignment_options();
+  $alignment = (string) (theme_get_setting('navbar_alignment', 'vsm') ?? 'right');
+  if ($alignment === 'right' || !isset($options[$alignment])) {
+    return;
+  }
+  // The menus sit in #navbarSupportedContent, which the navbar shows inline
+  // from the "lg" breakpoint (992px); below that they collapse behind the
+  // toggle button. "html" and !important outrank justify-content-md-end.
+  $attachments['#attached']['html_head'][] = [[
+    '#tag' => 'style',
+    '#value' => Markup::create('@media (min-width:992px){html #navbarSupportedContent{justify-content:' . $options[$alignment][1] . '!important;}}'),
+  ], 'vsm_navbar_alignment_css'];
+}

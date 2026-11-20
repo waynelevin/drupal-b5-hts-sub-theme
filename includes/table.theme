@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Table settings: zebra striping and row padding.
+ */
+
+use Drupal\Core\Render\Markup;
+
+/**
+ * Whether tables should be striped.
+ *
+ * @return bool
+ *   TRUE when the "Striped tables" theme setting is on.
+ */
+function vsm_table_striped(): bool {
+  // On by default: the base theme always striped Views tables.
+  return (bool) (theme_get_setting('table_striped', 'vsm') ?? TRUE);
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for table templates.
+ */
+function vsm_preprocess_table(array &$variables): void {
+  // The base theme adds the "table" class; add "table-striped" too. Respect
+  // tables that opt out of striping.
+  if (vsm_table_striped() && empty($variables['no_striping'])) {
+    $variables['attributes']['class'][] = 'table-striped';
+  }
+}
+
+/**
+ * Sets the striping flag for Views tables.
+ *
+ * Called from vsm_preprocess_views_view_table(). The theme's
+ * views-view-table.html.twig adds "table-striped" when it is set.
+ */
+function vsm_table_preprocess_views_view_table(array &$variables): void {
+  $variables['vsm_table_striped'] = vsm_table_striped();
+}
+
+/**
+ * Table row padding options.
+ *
+ * Each value is [label, CSS length or NULL]. The empty key keeps the padding
+ * of the selected Bootswatch theme: 1rem for Zephyr (the default), 0.75rem
+ * for Brite, and 0.5rem for the others and plain Bootstrap.
+ *
+ * @return array<string, array{0: string, 1: ?string}>
+ *   The options, keyed by setting value.
+ */
+function vsm_table_row_padding_options(): array {
+  return [
+    '' => ['Theme default', NULL],
+    'none' => ['None (0)', '0'],
+    'compact' => ['Compact (0.25rem / 4px)', '.25rem'],
+    'normal' => ['Normal (0.5rem / 8px)', '.5rem'],
+    'comfortable' => ['Comfortable (0.75rem / 12px)', '.75rem'],
+    'spacious' => ['Spacious (1rem / 16px)', '1rem'],
+    'extra-spacious' => ['Extra spacious (1.5rem / 24px)', '1.5rem'],
+  ];
+}
+
+/**
+ * Attaches the table row padding CSS to the page.
+ *
+ * Called from vsm_page_attachments_alter().
+ */
+function vsm_table_page_attachments(array &$attachments): void {
+  $options = vsm_table_row_padding_options();
+  $padding = (string) theme_get_setting('table_row_padding', 'vsm');
+  if ($padding === '' || !isset($options[$padding])) {
+    return;
+  }
+  $length = $options[$padding][1];
+
+  // Bootstrap pads every cell with "padding" on .table > * > tr > td/th.
+  // Override only the top and bottom. The "html" prefix outranks the
+  // Bootstrap and Bootswatch rule regardless of stylesheet order. Small tables
+  // (.table-sm) keep their own compact padding.
+  $attachments['#attached']['html_head'][] = [[
+    '#tag' => 'style',
+    '#value' => Markup::create("html .table:not(.table-sm)>:not(caption)>*>*{padding-top:$length;padding-bottom:$length;}"),
+  ], 'vsm_table_row_padding_css'];
+}

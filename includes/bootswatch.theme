@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @file
+ * Bootswatch theme setting: swaps the theme stylesheet for another build.
+ */
+
+/**
+ * Returns the Bootswatch options, keyed by setting value.
+ *
+ * "zephyr" is the default and uses css/style.css. The others use the builds
+ * in css/bootswatch/ (see build-bootswatch.mjs); "none" is plain Bootstrap.
+ *
+ * @return array<string, string>
+ *   Human-readable labels keyed by setting value.
+ */
+function vsm_bootswatch_options(): array {
+  $options = ['zephyr' => 'Zephyr (default)'];
+  foreach (glob(__DIR__ . '/../css/bootswatch/*.css') ?: [] as $file) {
+    $name = basename($file, '.css');
+    $options[$name] = $name === 'none' ? 'None (plain Bootstrap)' : ucfirst($name);
+  }
+  ksort($options);
+  // List "None" first.
+  return isset($options['none']) ? ['none' => $options['none']] + $options : $options;
+}
+
+/**
+ * Returns the selected Bootswatch theme.
+ *
+ * @return string
+ *   A key of vsm_bootswatch_options(), "zephyr" by default.
+ */
+function vsm_bootswatch(): string {
+  $name = (string) (theme_get_setting('bootswatch', 'vsm') ?? 'zephyr');
+  return isset(vsm_bootswatch_options()[$name]) ? $name : 'zephyr';
+}
+
+/**
+ * Implements hook_library_info_alter().
+ *
+ * Replaces css/style.css in the theme's "global-styling" library with the
+ * selected Bootswatch build. Each build is a complete stylesheet that already
+ * includes the theme's own styles.
+ */
+function vsm_library_info_alter(array &$libraries, string $extension): void {
+  if ($extension !== 'vsm' || !isset($libraries['global-styling']['css']['theme']['css/style.css'])) {
+    return;
+  }
+  $name = vsm_bootswatch();
+  if ($name === 'zephyr') {
+    return;
+  }
+  $css = &$libraries['global-styling']['css']['theme'];
+  $css = ["css/bootswatch/$name.css" => $css['css/style.css']] + $css;
+  unset($css['css/style.css']);
+}

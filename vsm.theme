@@ -1,5 +1,31 @@
 <?php
 
+/**
+ * @file
+ * Theme functions for the VSM theme.
+ */
+
+// Theme settings (Bootswatch theme, navbar alignment, font, tables) live in
+// includes/*.theme.
+foreach (glob(__DIR__ . '/includes/*.theme') as $file) {
+  require_once $file;
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ *
+ * Settings that add CSS to the page each provide a helper, called from here
+ * because a theme can only implement this hook once.
+ */
+function vsm_page_attachments_alter(array &$attachments): void {
+  // Re-render when the theme settings change.
+  $attachments['#cache']['tags'][] = 'config:vsm.settings';
+
+  vsm_navbar_page_attachments($attachments);
+  vsm_font_page_attachments($attachments);
+  vsm_table_page_attachments($attachments);
+}
+
 function vsm_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
     $form['revision_information']['#access'] = FALSE;
   }
@@ -8,6 +34,9 @@ function vsm_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
  * Implements hook_preprocess_HOOK() for views_view_table. hid all table rows except first
  */
 function vsm_preprocess_views_view_table(array &$variables): void {
+  // "Striped tables" setting, for every Views table.
+  vsm_table_preprocess_views_view_table($variables);
+
   static $seen = [];
 
   $view = $variables['view'];

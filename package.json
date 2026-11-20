@@ -4,6 +4,9 @@
   "description": "[Bootstrap 5](https://www.drupal.org/project/bootstrap5) subtheme.",
   "main": "webpack.mix.js",
   "scripts": {
+    "build": "npm run build:css && npm run build:bootswatch",
+    "build:css": "sass --style=compressed --no-source-map --quiet-deps --silence-deprecation=import --silence-deprecation=global-builtin --silence-deprecation=color-functions --silence-deprecation=mixed-decls scss/style.scss css/style.css && sass --style=compressed --no-source-map --quiet-deps --silence-deprecation=import --silence-deprecation=global-builtin --silence-deprecation=color-functions --silence-deprecation=mixed-decls scss/ck5style.scss css/ck5style.css",
+    "build:bootswatch": "node build-bootswatch.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
