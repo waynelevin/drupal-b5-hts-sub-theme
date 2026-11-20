@@ -1,6 +1,6 @@
 {
-    "name": "waynelevin/zephyr",
-    "description": "Zephyr: a Bootstrap 5 sub-theme for Drupal.",
+    "name": "waynelevin/vsm",
+    "description": "VSM: a Bootstrap 5 sub-theme for Drupal (Volunteer Shift Manager).",
     "type": "drupal-custom-theme",
     "license": "GPL-2.0-or-later",
     "require": {

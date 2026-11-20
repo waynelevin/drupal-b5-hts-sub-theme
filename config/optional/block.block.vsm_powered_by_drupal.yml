@@ -4,9 +4,9 @@ dependencies:
   module:
     - system
   theme:
-    - zephyr
-id: zephyr_powered_by_drupal
-theme: zephyr
+    - vsm
+id: vsm_powered_by_drupal
+theme: vsm
 region: footer
 weight: 0
 provider: null

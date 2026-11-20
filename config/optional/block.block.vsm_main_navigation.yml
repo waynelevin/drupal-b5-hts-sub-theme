@@ -6,9 +6,9 @@ dependencies:
   module:
     - system
   theme:
-    - zephyr
-id: zephyr_main_navigation
-theme: zephyr
+    - vsm
+id: vsm_main_navigation
+theme: vsm
 region: nav_main
 weight: 0
 provider: null

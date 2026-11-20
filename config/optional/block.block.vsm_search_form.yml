@@ -4,9 +4,9 @@ dependencies:
   module:
     - search
   theme:
-    - zephyr
-id: zephyr_search_form
-theme: zephyr
+    - vsm
+id: vsm_search_form
+theme: vsm
 region: nav_additional
 weight: 0
 provider: null

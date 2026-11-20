@@ -1,13 +1,13 @@
 <?php
 
-function zephyr_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function vsm_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
     $form['revision_information']['#access'] = FALSE;
   }
 
 /**
  * Implements hook_preprocess_HOOK() for views_view_table. hid all table rows except first
  */
-function zephyr_preprocess_views_view_table(array &$variables): void {
+function vsm_preprocess_views_view_table(array &$variables): void {
   static $seen = [];
 
   $view = $variables['view'];

@@ -2,9 +2,9 @@ langcode: en
 status: true
 dependencies:
   theme:
-    - zephyr
-id: zephyr_local_actions
-theme: zephyr
+    - vsm
+id: vsm_local_actions
+theme: vsm
 region: content
 weight: -2
 provider: null

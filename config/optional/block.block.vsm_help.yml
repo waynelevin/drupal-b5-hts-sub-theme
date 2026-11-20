@@ -4,9 +4,9 @@ dependencies:
   module:
     - help
   theme:
-    - zephyr
-id: zephyr_help
-theme: zephyr
+    - vsm
+id: vsm_help
+theme: vsm
 region: content
 weight: -3
 provider: null

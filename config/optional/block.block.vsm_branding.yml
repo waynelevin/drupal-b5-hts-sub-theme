@@ -4,9 +4,9 @@ dependencies:
   module:
     - system
   theme:
-    - zephyr
-id: zephyr_branding
-theme: zephyr
+    - vsm
+id: vsm_branding
+theme: vsm
 region: nav_branding
 weight: -6
 provider: null

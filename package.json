@@ -1,5 +1,5 @@
 {
-  "name": "zephyr",
+  "name": "vsm",
   "version": "1.0.0",
   "description": "[Bootstrap 5](https://www.drupal.org/project/bootstrap5) subtheme.",
   "main": "webpack.mix.js",
