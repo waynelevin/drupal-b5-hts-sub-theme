@@ -32,10 +32,15 @@ function vsm_page_attachments_alter(array &$attachments): void {
 function vsm_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   $form['revision_information']['#access'] = FALSE;
 
-  // Recurring Events Registration's "Contact registrants" form leaves its
-  // "Send Email(s)" button as a plain submit, which the base theme styles as
-  // a grey btn-secondary. Mark it primary so it gets btn-primary.
-  if ($form_id === 'recurring_events_registration_contact_form' && isset($form['submit'])) {
+  // Recurring Events Registration's "Contact registrants" and "Resend
+  // registration email" forms leave their "Send Email(s)" / "Resend Email"
+  // buttons as plain submits, which the base theme styles as a grey
+  // btn-secondary. Mark them primary so they get btn-primary.
+  $primary_submit_forms = [
+    'recurring_events_registration_contact_form',
+    'recurring_events_registration_resend_form',
+  ];
+  if (in_array($form_id, $primary_submit_forms, TRUE) && isset($form['submit'])) {
     $form['submit']['#button_type'] = 'primary';
   }
 }
