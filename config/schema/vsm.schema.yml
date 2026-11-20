@@ -20,3 +20,14 @@ vsm.settings:
     table_row_padding:
       type: string
       label: 'Table row top and bottom padding (empty for the Bootswatch theme default)'
+    # The base theme's settings form saves its "Subtheme" generator fields
+    # with the other settings; they are not used by VSM.
+    subtheme_folder:
+      type: string
+      label: 'Bootstrap 5 subtheme generator: folder'
+    subtheme_name:
+      type: string
+      label: 'Bootstrap 5 subtheme generator: name'
+    subtheme_machine_name:
+      type: string
+      label: 'Bootstrap 5 subtheme generator: machine name'
