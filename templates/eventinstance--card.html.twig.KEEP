@@ -1,0 +1,43 @@
+<div class="p-3 rounded-3 bg-primary-subtle text-primary-emphasis">
+
+<h4>{{ content.title }}</h4>
+{{ content.date|render|striptags|trim }}<br>
+Capacity {{ eventinstance.availability_count.value }} · Available {{ eventinstance.registration_count.value }}<br>
+<br>
+
+<div class="d-flex justify-content-end">
+{% set availability = eventinstance.availability_count.value %}
+{% if availability <= 0 %}
+    <span class="badge text-bg-warning">{{ 'Event Full'|t }}</span>
+{% else %}
+  <a href="/events/{{ eventinstance.id.value }}/registrations/add" class="btn btn-primary" role="button">Register</a>
+{% endif %}
+</div>
+
+</div>
+
+{#
+{{ content.description }}
+{{ (eventinstance.date.value ~ ' UTC')|date('l j F Y g:ia') }}
+End: {{ (eventinstance.end_date.value ~ ' UTC')|date('l j F Y g:ia')  }}
+ID: {{ eventinstance.id.value }}
+{{ eventinstance.field_start_day_of_week_name.value }}
+{{ eventinstance.field_start_month_name.value }}
+{{ eventinstance.field_start_week_year.value }}
+{{ eventinstance.field_start_week_number.value }}
+{{ eventinstance.field_start_month_number.value }}
+{{ eventinstance.field_start_year.value }}
+<div class="float-end">{{ content.event_ical_link }}</div>
+
+GET ALL FIELD NAMES
+{% for name, field in eventinstance.getFields() %}
+  {{ name }}<br>
+{% endfor %}
+
+DEFAULT DIPLAY ALL FIELDS
+<div{{ attributes }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  {{ content }}
+</div>
+#}

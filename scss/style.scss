@@ -1,0 +1,20 @@
+// Import Bootswatch theme
+@import '../../../../themes/contrib/bootstrap5/dist/bootswatch/5.3.8/dist/zephyr/variables';
+
+// Sub theme styling.
+@import 'variables_drupal';
+
+// Bootstrap overridden variables.
+// @see https://getbootstrap.com/docs/5.2/customize/sass/#variable-defaults.
+@import 'variables_bootstrap';
+
+// Include bootstrap.
+@import '../../../../themes/contrib/bootstrap5/scss/style';
+
+// Import Bootswatch theme styles
+@import '../../../../themes/contrib/bootstrap5/dist/bootswatch/5.3.8/dist/zephyr/bootswatch';
+
+// Include custom changes.
+@import 'custom';
+
+@import 'typography';

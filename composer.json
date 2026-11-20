@@ -1,0 +1,10 @@
+{
+    "name": "waynelevin/zephyr",
+    "description": "Zephyr: a Bootstrap 5 sub-theme for Drupal.",
+    "type": "drupal-custom-theme",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "^10.1 || ^11",
+        "drupal/bootstrap5": "^4.0"
+    }
+}
