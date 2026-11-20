@@ -51,3 +51,18 @@ function vsm_preprocess_views_view_table(array &$variables): void {
   }
   $seen[$key] = TRUE;
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for eventinstance_register_button.
+ *
+ * Recurring Events Registration gives its "Register" link Drupal's "button"
+ * class, which the base theme styles as an uncoloured button. Its "a.button"
+ * rule also outranks Bootstrap's colour classes, so replace "button" with a
+ * primary Bootstrap button, coloured by the selected Bootswatch theme.
+ */
+function vsm_preprocess_eventinstance_register_button(array &$variables): void {
+  $classes = array_diff($variables['attributes']['class'] ?? [], ['button']);
+  // The base theme gives every .btn side margins for buttons in a row; line
+  // this one up with the content instead, with some space above it.
+  $variables['attributes']['class'] = array_values(array_merge($classes, ['btn', 'btn-primary', 'ms-0', 'mt-2']));
+}
