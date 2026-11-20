@@ -26,9 +26,19 @@ function vsm_page_attachments_alter(array &$attachments): void {
   vsm_table_page_attachments($attachments);
 }
 
+/**
+ * Implements hook_form_alter().
+ */
 function vsm_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-    $form['revision_information']['#access'] = FALSE;
+  $form['revision_information']['#access'] = FALSE;
+
+  // Recurring Events Registration's "Contact registrants" form leaves its
+  // "Send Email(s)" button as a plain submit, which the base theme styles as
+  // a grey btn-secondary. Mark it primary so it gets btn-primary.
+  if ($form_id === 'recurring_events_registration_contact_form' && isset($form['submit'])) {
+    $form['submit']['#button_type'] = 'primary';
   }
+}
 
 /**
  * Implements hook_preprocess_HOOK() for views_view_table. hid all table rows except first
