@@ -42,6 +42,16 @@ function vsm_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
   ];
   if (in_array($form_id, $primary_submit_forms, TRUE) && isset($form['submit'])) {
     $form['submit']['#button_type'] = 'primary';
+    // The base theme gives every .btn side margins; line the button up with
+    // the form fields instead.
+    $form['submit']['#attributes']['class'][] = 'ms-0';
+
+    // The module wraps its "Go Back to Registration List" link in an inline
+    // <span>, so it sits beside the button. Put it on its own line below.
+    if (isset($form['back_link'])) {
+      $form['back_link']['#prefix'] = '<div class="register-back-link mt-3">';
+      $form['back_link']['#suffix'] = '</div>';
+    }
   }
 }
 
