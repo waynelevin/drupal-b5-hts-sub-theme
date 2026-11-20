@@ -5,6 +5,6 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "drupal/core": "^10.1 || ^11",
-        "drupal/bootstrap5": "^4.0"
+        "drupal/bootstrap5": "^4.0 || ^5.0"
     }
 }
