@@ -15,7 +15,7 @@
  *   Human-readable labels keyed by setting value.
  */
 function vsm_bootswatch_options(): array {
-  $options = ['zephyr' => 'Zephyr (default)'];
+  $options = ['zephyr' => 'Zephyr'];
   foreach (glob(__DIR__ . '/../css/bootswatch/*.css') ?: [] as $file) {
     $name = basename($file, '.css');
     $options[$name] = $name === 'none' ? 'None (plain Bootstrap)' : ucfirst($name);
