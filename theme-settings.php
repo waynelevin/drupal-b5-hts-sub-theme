@@ -8,6 +8,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 foreach (glob(__DIR__ . '/includes/*.theme') as $file) {
   require_once $file;
@@ -23,6 +24,50 @@ function vsm_form_system_theme_settings_alter(array &$form, FormStateInterface $
     '#open' => TRUE,
     '#weight' => -20,
   ];
+  // Links to the optional VSM style guide module's pages, if it's enabled.
+  if (\Drupal::moduleHandler()->moduleExists('vsm_style_guide')) {
+    $form['vsm_style_guide'] = [
+      '#type' => 'details',
+      '#title' => t('Style guide'),
+      '#open' => TRUE,
+      '#weight' => -30,
+    ];
+    // Equal-width buttons, each with its help text below.
+    $links = [
+      'style_guide' => [
+        t('View style guide'),
+        'vsm_style_guide.page',
+        t('All Bootstrap 5 components with the currently saved settings.'),
+      ],
+      'icons' => [
+        t('View icons'),
+        'vsm_style_guide.icons',
+        t('All Bootstrap Icons, with search and click to copy.'),
+      ],
+    ];
+    foreach ($links as $key => [$title, $route, $help]) {
+      $form['vsm_style_guide'][$key] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['form-item']],
+        'link' => [
+          '#type' => 'link',
+          '#title' => $title,
+          '#url' => Url::fromRoute($route),
+          '#attributes' => [
+            'class' => ['button'],
+            'target' => '_blank',
+            'rel' => 'noopener',
+            'style' => 'box-sizing: border-box; width: 12rem; justify-content: center; text-align: center; margin-inline: 0;',
+          ],
+        ],
+        'help' => [
+          '#markup' => $help,
+          '#prefix' => '<div class="form-item__description description">',
+          '#suffix' => '</div>',
+        ],
+      ];
+    }
+  }
   $form['vsm_style']['bootswatch'] = [
     '#type' => 'select',
     '#title' => t('Bootswatch theme'),
