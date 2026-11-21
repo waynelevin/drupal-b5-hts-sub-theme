@@ -2,3 +2,13 @@ global-styling:
   css:
     theme:
       css/style.css: {}
+  dependencies:
+    - vsm/bootstrap-icons
+
+# Bootstrap Icons, for "bi bi-*" icons: see icons/bootstrap-icons/README.md.
+# Keep the version in step with the files when updating them.
+bootstrap-icons:
+  version: 1.13.2
+  css:
+    base:
+      icons/bootstrap-icons/bootstrap-icons.min.css: { minified: true }
