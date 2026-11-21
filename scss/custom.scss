@@ -1,3 +1,20 @@
 .navbar {
     margin-bottom: 10px;
 }
+
+// Space between the page content and the footer. The footer's "mt-auto"
+// class (which keeps it at the bottom of short pages) overrides any top
+// margin on it, so the gap goes at the bottom of <main> instead.
+main[role="main"] {
+    padding-bottom: 2rem;
+}
+
+// A footer half the base theme's height: less padding, and no margin under
+// its last paragraph.
+footer[role="contentinfo"] {
+    padding: 0.875rem 0;
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+}
