@@ -8,6 +8,7 @@ it uses the Bootswatch **Zephyr** colour scheme and its font, Inter.
 
 - [Installation](#installation)
 - [Theme settings](#theme-settings)
+- [Icons](#icons)
 - [Development](#development)
 - [File structure](#file-structure)
 
@@ -37,7 +38,7 @@ marked *VSM* below. Each takes effect as soon as the form is saved.
 | Theme mode | Light or dark colour mode | Bootstrap 5 |
 | Body options | Container width, body text and background colours | Bootstrap 5 |
 | Navbar options | Navbar theme and background | Bootstrap 5 |
-| Navbar options | Navbar menu alignment | VSM |
+| Navbar options | Navbar menu alignment, Main menu icons | VSM |
 | Footer options | Footer theme and background | Bootstrap 5 |
 
 ### Bootswatch theme *(VSM)*
@@ -80,6 +81,30 @@ Where the menus sit in the top navbar: **Left**, **Centre** or **Right**
 menus collapse behind the toggle button. It is in the base theme's **Navbar
 options** section, next to the navbar colours.
 
+### Main menu icons *(VSM)*
+
+An icon before main menu links, from [Bootstrap Icons](#icons). One link per
+line, as `path|icon`:
+
+```
+/node/3|house
+/event-cards|calendar-event
+/form/contact|envelope
+```
+
+- **Path**: the link's address. Either its alias (eg `/features`) or its
+  internal path (eg `/node/3`) matches; use `/` for a link to the front page.
+  It works for every kind of main menu link, including links that Views adds.
+- **Icon**: a Bootstrap Icons name, without the `bi-` prefix. Browse them at
+  [icons.getbootstrap.com](https://icons.getbootstrap.com/), or on the
+  optional VSM style guide module's icons page.
+
+Links that aren't listed have no icon, and lines that aren't in the
+`path|icon` form are ignored. Icons in dropdown sub-menus work the same way.
+The icons are hidden from screen readers, so each link is still read by its
+title. Empty by default. It is in the base theme's **Navbar options**
+section, under **Navbar menu alignment**.
+
 ### Tables *(VSM)*
 
 Both settings apply to Drupal's tables on pages that use this theme (table
@@ -117,6 +142,7 @@ and can be exported with configuration management. VSM's own keys:
 | `bootswatch` | `zephyr` | A Bootswatch theme name, eg `darkly`, or `none` for plain Bootstrap |
 | `font` | `''` | A font key from `includes/font.theme`, eg `lato`, `system`, or empty for the theme default |
 | `navbar_alignment` | `right` | `left`, `center`, `right` |
+| `menu_icons` | `''` | One `path\|icon` per line, eg `/event-cards\|calendar-event`, or empty for no icons |
 | `table_striped` | `true` | `true` or `false` |
 | `table_row_padding` | `''` | `none`, `compact`, `normal`, `comfortable`, `spacious`, `extra-spacious`, or empty for the theme default |
 
@@ -125,6 +151,14 @@ The base theme's keys (`b5_*`) are described in its own settings form.
 > **Tip:** when setting a boolean with drush, use `1` or `0`:
 > `drush config:set vsm.settings table_striped 0`. The word `false` is
 > stored as "on".
+
+## Icons
+
+VSM loads [Bootstrap Icons](https://icons.getbootstrap.com/) on every page,
+from its own copy in `icons/bootstrap-icons/` (version and update steps in
+that folder's `README.md`). Use them in content or templates as
+`<i class="bi bi-calendar-event"></i>`, and in the main menu with the
+[Main menu icons](#main-menu-icons-vsm) setting.
 
 ## Development
 
@@ -168,13 +202,16 @@ vsm/
 │   ├── style.css                  Zephyr (default)
 │   ├── ck5style.css               CKEditor 5 styles
 │   └── bootswatch/                One stylesheet per other Bootswatch theme
+├── icons/bootstrap-icons/         Bootstrap Icons font (loaded on every page)
 ├── includes/                      Settings logic
 │   ├── bootswatch.theme           Bootswatch stylesheet switching
 │   ├── font.theme                 Font setting
+│   ├── menu_icons.theme           Main menu icons
 │   ├── navbar.theme               Navbar menu alignment
 │   └── table.theme                Striped tables and row padding
 ├── scss/                          Sass sources
 ├── templates/                     Twig template overrides
+│   └── navigation/menu--main.html.twig  Main menu, with icons
 ├── build-bootswatch.mjs           Builds css/bootswatch/
 ├── theme-settings.php             Settings form
 ├── vsm.theme                      Hooks

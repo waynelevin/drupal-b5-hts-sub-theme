@@ -11,6 +11,9 @@ vsm.settings:
     navbar_alignment:
       type: string
       label: 'Navbar menu alignment (left, center or right)'
+    menu_icons:
+      type: string
+      label: 'Main menu icons, one "path|icon" per line'
     font:
       type: string
       label: 'Font (empty for the theme default)'

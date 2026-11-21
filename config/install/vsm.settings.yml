@@ -8,6 +8,7 @@ b5_top_container: container
 b5_top_container_config: ''
 bootswatch: zephyr
 navbar_alignment: right
+menu_icons: ''
 font: ''
 table_striped: true
 table_row_padding: ''

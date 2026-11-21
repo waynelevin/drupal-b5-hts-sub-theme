@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file
+ * Main menu icons setting.
+ *
+ * The "Main menu icons" setting has one line per link, "path|icon", eg
+ * "/event-cards|calendar-event". The icon is a Bootstrap Icons name, without
+ * the "bi-" prefix, shown before the link's title.
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Returns the main menu icons, keyed by path.
+ *
+ * @return array<string, string>
+ *   Icon names keyed by path, eg ['/event-cards' => 'calendar-event'].
+ */
+function vsm_menu_icons(): array {
+  $icons = [];
+  $lines = preg_split('/\R/', (string) theme_get_setting('menu_icons', 'vsm'));
+  foreach ($lines as $line) {
+    [$path, $icon] = array_map('trim', explode('|', $line, 2)) + [1 => ''];
+    $icon = preg_replace('/^bi-/', '', strtolower($icon));
+    if ($path !== '' && preg_match('/^[a-z0-9-]+$/', $icon)) {
+      $icons['/' . ltrim($path, '/')] = $icon;
+    }
+  }
+  return $icons;
+}
+
+/**
+ * Returns the paths a menu link can be matched by.
+ *
+ * Both the internal path (eg /node/3) and the alias (eg /features) match, and
+ * the front page also matches "/".
+ *
+ * @return string[]
+ *   The paths.
+ */
+function vsm_menu_icon_paths(Url $url): array {
+  if ($url->isExternal()) {
+    return [$url->toString()];
+  }
+  $paths = [];
+  if ($url->isRouted()) {
+    if ($url->getRouteName() === '<front>') {
+      $paths[] = '/';
+    }
+    elseif ($url->getRouteName() !== '<nolink>' && $url->getRouteName() !== '<none>') {
+      $paths[] = '/' . $url->getInternalPath();
+    }
+  }
+  $base_path = base_path();
+  $alias = $url->toString();
+  if (str_starts_with($alias, $base_path)) {
+    $paths[] = '/' . substr($alias, strlen($base_path));
+  }
+  return array_unique($paths);
+}
+
+/**
+ * Adds each main menu item's icon, as "icon", for menu--main.html.twig.
+ */
+function vsm_menu_icons_add(array &$items, array $icons): void {
+  foreach ($items as &$item) {
+    if (isset($item['url']) && $item['url'] instanceof Url) {
+      foreach (vsm_menu_icon_paths($item['url']) as $path) {
+        if (isset($icons[$path])) {
+          $item['icon'] = $icons[$path];
+          break;
+        }
+      }
+    }
+    if (!empty($item['below'])) {
+      vsm_menu_icons_add($item['below'], $icons);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu__main.
+ */
+function vsm_preprocess_menu__main(array &$variables): void {
+  // Re-render the menu when the setting changes.
+  $variables['#cache']['tags'][] = 'config:vsm.settings';
+  $icons = vsm_menu_icons();
+  if ($icons && !empty($variables['items'])) {
+    vsm_menu_icons_add($variables['items'], $icons);
+  }
+}

@@ -99,6 +99,15 @@ function vsm_form_system_theme_settings_alter(array &$form, FormStateInterface $
     '#default_value' => theme_get_setting('navbar_alignment', 'vsm') ?? 'right',
     '#description' => t('Position of the menus in the top navbar on wide screens (992px and up). On smaller screens they collapse behind the toggle button.'),
   ];
+  $form[$navbar]['menu_icons'] = [
+    '#type' => 'textarea',
+    '#title' => t('Main menu icons'),
+    '#default_value' => (string) theme_get_setting('menu_icons', 'vsm'),
+    '#rows' => 8,
+    '#description' => t('An icon before main menu links, one link per line: <code>path|icon</code>, eg <code>/event-cards|calendar-event</code>. The path is the link\'s address (its alias or eg <code>/node/3</code>; <code>/</code> for the front page). The icon is a <a href=":url" target="_blank" rel="noopener">Bootstrap Icons</a> name, without "bi-". Links not listed have no icon.', [
+      ':url' => \Drupal::moduleHandler()->moduleExists('vsm_style_guide') ? Url::fromRoute('vsm_style_guide.icons')->toString() : 'https://icons.getbootstrap.com/',
+    ]),
+  ];
 
   $form['vsm_tables'] = [
     '#type' => 'details',
